@@ -3,6 +3,8 @@ import { SignUpDto } from "./dto/sign-up.dto";
 import { UsersService } from "src/users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { SignInDto } from "./dto/sign-in.dto";
+import { ValidateUserDto } from "./dto/validate-user.dto";
+import { User } from "src/users/entities/user.entity";
 import * as argon2 from "argon2";
 
 @Injectable()
@@ -12,13 +14,22 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    public async signUp(signUpDto: SignUpDto) {
-        const user = await this.usersService.create(signUpDto);
+    private async validateUser(validateUserDto: ValidateUserDto) {
+        const user = await this.usersService.findOneByEmail(validateUserDto.email);
 
-        const { password: _, ...userWithoutPassword } = user;
+        if (!user) {
+            throw new NotFoundException(`User with email="${validateUserDto.email} not found.`);
+        }
 
+        const passwordsMatch = await argon2.verify(user.password, validateUserDto.password);
+        if (passwordsMatch) {
+            return user;
+        }
+        throw new BadRequestException("Password incorrect");
+    }
+
+    private async generateToken(user: User) {
         return {
-            user: userWithoutPassword,
             access: this.jwtService.sign({
                 id: user.id,
                 name: user.name,
@@ -28,24 +39,32 @@ export class AuthService {
         };
     }
 
+    public async signUp(signUpDto: SignUpDto) {
+        const user = await this.usersService.create(signUpDto);
+
+        const { password: _, ...userWithoutPassword } = user;
+
+        const token = await this.generateToken(user);
+
+        return {
+            user: userWithoutPassword,
+            access: token,
+        };
+    }
+
     public async signIn(signInDto: SignInDto) {
-        const user = await this.usersService.findOneByEmail(signInDto.email);
+        const user = await this.validateUser(signInDto);
 
-        if (!user) {
-            throw new NotFoundException(`User with email="${signInDto.email} not found.`);
-        }
+        const token = await this.generateToken(user);
 
-        const passwordsMatch = await argon2.verify(user.password, signInDto.password);
-        if (passwordsMatch) {
-            return {
-                access: this.jwtService.sign({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    password: user.password,
-                }),
-            };
-        }
-        throw new BadRequestException("Password incorrect");
+        const { password: _, ...userWithoutPassword } = user;
+
+        // await
+        this.usersService.updateLastLoginTime(user.id);
+
+        return {
+            user: userWithoutPassword,
+            access: token,
+        };
     }
 }

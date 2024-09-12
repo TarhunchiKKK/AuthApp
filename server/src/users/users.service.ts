@@ -56,6 +56,10 @@ export class UsersService {
         return user;
     }
 
+    public async updateLastLoginTime(userId: string) {
+        await this.usersRepository.update(userId, { lastLoginAt: new Date() });
+    }
+
     public async remove(userId: string) {
         await this.usersRepository.delete(userId);
     }
