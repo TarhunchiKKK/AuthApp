@@ -3,7 +3,7 @@ import { UserStatus } from "../enums/user-status.enum";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string;
 
     @Column()
@@ -20,7 +20,7 @@ export class User {
     regiteredAt: Date;
 
     @Column({ nullable: true })
-    lastLogin: Date;
+    lastLoginAt: Date;
 
     @Column({ type: "enum", enum: UserStatus })
     status: UserStatus;
