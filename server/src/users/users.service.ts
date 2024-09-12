@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserStatus } from "./enums/user-status.enum";
-import * as argon2 from "argon2";
 import { ChangeUsersStatusDto } from "./dto/change-users-status.dto";
 import { RemoveUsersDto } from "./dto/remove-users.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import * as argon2 from "argon2";
 
 @Injectable()
 export class UsersService {
@@ -17,6 +17,16 @@ export class UsersService {
     ) {}
 
     public async create(createUserDto: CreateUserDto) {
+        const existUser = await this.usersRepository.findOne({
+            where: {
+                email: createUserDto.email,
+            },
+        });
+
+        if (existUser) {
+            throw new BadRequestException("User with such email already exists.");
+        }
+
         const hashedPassword = await argon2.hash(createUserDto.password);
         const dataToSave: Omit<User, "id" | "regiteredAt"> = {
             ...createUserDto,
@@ -39,7 +49,7 @@ export class UsersService {
         });
 
         if (!user) {
-            throw new NotFoundException(`User with id=${userId} not found`);
+            throw new NotFoundException(`User with id=${userId} not found.`);
         }
 
         return user;
@@ -53,7 +63,7 @@ export class UsersService {
         });
 
         if (!user) {
-            throw new NotFoundException(`User with email=${email} not found`);
+            throw new NotFoundException(`User with email=${email} not found.`);
         }
 
         return user;

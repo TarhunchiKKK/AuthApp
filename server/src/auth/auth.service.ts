@@ -26,7 +26,7 @@ export class AuthService {
         if (passwordsMatch) {
             return user;
         }
-        throw new BadRequestException("Password incorrect");
+        throw new BadRequestException("Incorrect password.");
     }
 
     private async generateToken(user: User) {
