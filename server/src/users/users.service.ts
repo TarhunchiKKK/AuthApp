@@ -6,6 +6,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UserStatus } from "./enums/user-status.enum";
 import * as argon2 from "argon2";
 import { ChangeUsersStatusDto } from "./dto/change-users-status.dto";
+import { RemoveUsersDto } from "./dto/remove-users.dto";
 
 @Injectable()
 export class UsersService {
@@ -25,11 +26,11 @@ export class UsersService {
         return await this.usersRepository.save(dataToSave);
     }
 
-    public async findAll() {
+    public async findAllUsers() {
         return await this.usersRepository.find();
     }
 
-    public async findOneById(userId: string) {
+    public async findUserById(userId: string) {
         const user = await this.usersRepository.findOne({
             where: {
                 id: userId,
@@ -43,7 +44,7 @@ export class UsersService {
         return user;
     }
 
-    public async findOneByEmail(email: string) {
+    public async findUserByEmail(email: string) {
         const user = await this.usersRepository.findOne({
             where: {
                 email: email,
@@ -61,13 +62,13 @@ export class UsersService {
         await this.usersRepository.update(userId, { lastLoginAt: new Date() });
     }
 
-    public async remove(userId: string) {
-        await this.usersRepository.delete(userId);
-    }
-
     public async changeUsersStatus(changeUsersStatusDto: ChangeUsersStatusDto) {
         const { users, status } = changeUsersStatusDto;
 
         await Promise.all(users.map((user) => this.usersRepository.update(user.id, { status })));
+    }
+
+    public async removeMultipleUsers(removeUsersDto: RemoveUsersDto) {
+        await Promise.all(removeUsersDto.users.map((user) => this.usersRepository.delete(user.id)));
     }
 }
