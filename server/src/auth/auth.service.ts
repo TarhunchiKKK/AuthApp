@@ -6,6 +6,7 @@ import { SignInDto } from "./dto/sign-in.dto";
 import { ValidateUserDto } from "./dto/validate-user.dto";
 import { User } from "src/users/entities/user.entity";
 import * as argon2 from "argon2";
+import { UserStatus } from "src/users/enums/user-status.enum";
 
 @Injectable()
 export class AuthService {
@@ -59,8 +60,10 @@ export class AuthService {
 
         const { password: _, ...userWithoutPassword } = user;
 
-        // await
-        this.usersService.updateLastLoginTime(user.id);
+        await this.usersService.updateUser(user.id, {
+            lastLoginAt: new Date(),
+            status: UserStatus.Active,
+        });
 
         return {
             user: userWithoutPassword,

@@ -7,6 +7,7 @@ import { UserStatus } from "./enums/user-status.enum";
 import * as argon2 from "argon2";
 import { ChangeUsersStatusDto } from "./dto/change-users-status.dto";
 import { RemoveUsersDto } from "./dto/remove-users.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -58,8 +59,8 @@ export class UsersService {
         return user;
     }
 
-    public async updateLastLoginTime(userId: string) {
-        await this.usersRepository.update(userId, { lastLoginAt: new Date() });
+    public async updateUser(userId: string, updateUserDto: UpdateUserDto) {
+        await this.usersRepository.update(userId, updateUserDto);
     }
 
     public async changeUsersStatus(changeUsersStatusDto: ChangeUsersStatusDto) {

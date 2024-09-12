@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+    BadRequestException,
+    CanActivate,
+    ExecutionContext,
+    Injectable,
+    UnauthorizedException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
@@ -10,6 +16,11 @@ export class AuthGuard implements CanActivate {
 
         try {
             const authHeaders = request.headers.authorization;
+
+            if (!authHeaders) {
+                throw new BadRequestException("No auth headers found in request");
+            }
+
             const [bearer, token, _] = authHeaders.split(" ");
 
             if (bearer !== "Bearer" || !token) {
@@ -19,8 +30,8 @@ export class AuthGuard implements CanActivate {
             const { id, name, email, password } = this.jwtService.verify(token);
             request.user = { id, name, email, password };
             return true;
-        } catch (_: unknown) {
-            throw new UnauthorizedException("Authorization error.");
+        } catch (exception: unknown) {
+            throw exception;
         }
     }
 }

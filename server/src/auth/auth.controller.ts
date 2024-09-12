@@ -3,6 +3,7 @@ import { AuthService } from "./auth.service";
 import { SignUpDto } from "./dto/sign-up.dto";
 import { SignInDto } from "./dto/sign-in.dto";
 import { AuthGuard } from "./guards/auth.guard";
+import { UserBlockedGuard } from "./guards/user-blocked.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -13,13 +14,13 @@ export class AuthController {
         return await this.authService.signUp(signUpDto);
     }
 
-    @Post("sign-in") //-
+    @Post("sign-in")
     public async signIn(@Body() signInDto: SignInDto) {
         return await this.authService.signIn(signInDto);
     }
 
     @Get("me")
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, UserBlockedGuard)
     public async getProfile(@Request() request) {
         return request.user;
     }
