@@ -5,6 +5,7 @@ import { User } from "./entities/user.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserStatus } from "./enums/user-status.enum";
 import * as argon2 from "argon2";
+import { ChangeUsersStatusDto } from "./dto/change-users-status.dto";
 
 @Injectable()
 export class UsersService {
@@ -62,5 +63,11 @@ export class UsersService {
 
     public async remove(userId: string) {
         await this.usersRepository.delete(userId);
+    }
+
+    public async changeUsersStatus(changeUsersStatusDto: ChangeUsersStatusDto) {
+        const { users, status } = changeUsersStatusDto;
+
+        await Promise.all(users.map((user) => this.usersRepository.update(user.id, { status })));
     }
 }
