@@ -17,12 +17,13 @@ export const authApi = createApi({
     }),
 
     endpoints: (builder) => ({
-        signUp: builder.mutation<ISignUpResponse, ISignUpQueryArgs>({
+        signUp: builder.mutation<string, ISignUpQueryArgs>({
             query: (queryArgs: ISignUpQueryArgs) => ({
                 url: "/sign-up",
                 method: "POST",
                 body: queryArgs.body,
             }),
+            transformResponse: (response: ISignUpResponse) => response.access.access,
             transformErrorResponse: (error: unknown) => (error as IAuthError).data.message,
         }),
 
