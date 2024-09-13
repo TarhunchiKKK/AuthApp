@@ -38,7 +38,11 @@ export class UsersService {
     }
 
     public async findAllUsers() {
-        return await this.usersRepository.find();
+        return await this.usersRepository.find({
+            order: {
+                email: "ASC",
+            },
+        });
     }
 
     public async findUserById(userId: string) {

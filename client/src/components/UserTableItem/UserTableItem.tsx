@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { selectOneUser, unselectOneUser, useAppSelector } from "../../redux";
 import { IUserTableItemProps } from "./props";
+import { formatDate } from "../../helpers";
 
 export function UserTableItem({ user }: IUserTableItemProps) {
     const dispatch = useDispatch();
@@ -29,8 +30,8 @@ export function UserTableItem({ user }: IUserTableItemProps) {
             <td className="table-cell">{user.id}</td>
             <td className="table-cell">{user.name}</td>
             <td className="table-cell">{user.email}</td>
-            <td className="table-cell">{user.regiteredAt.getTime()}</td>
-            <td className="table-cell">{user.lastLoginAt ? user.lastLoginAt.getTime() : "-"}</td>
+            <td className="table-cell">{formatDate(user.regiteredAt)}</td>
+            <td className="table-cell">{user.lastLoginAt ? formatDate(user.lastLoginAt) : "-"}</td>
             <td className="table-cell">{user.status}</td>
         </tr>
     );
