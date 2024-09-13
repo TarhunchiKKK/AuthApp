@@ -14,5 +14,5 @@ export const store = configureStore({
         getDefaultMiddleware().concat(usersApi.middleware).concat(authApi.middleware),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+type RootState = ReturnType<typeof store.getState>;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

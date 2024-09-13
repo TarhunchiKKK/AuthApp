@@ -2,8 +2,12 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { authApi } from "../../../api";
 import { ISignUpDto } from "../interfaces";
 import { setToken } from "../../../helpers";
+import { ROUTES } from "../../../router";
+import { useNavigate } from "react-router-dom";
 
 export function useSignUpForm() {
+    const navigate = useNavigate();
+
     const [signUp, { error }] = authApi.useSignUpMutation();
     const [formState, setFormState] = useState<ISignUpDto>({
         name: "",
@@ -25,10 +29,13 @@ export function useSignUpForm() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
         const { data: token } = await signUp({ body: formState });
         if (token) {
             setToken(token);
         }
+
+        navigate(ROUTES.HOME);
     };
 
     return {

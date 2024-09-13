@@ -2,8 +2,12 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { authApi } from "../../../api";
 import { ISignInDto } from "../interfaces";
 import { setToken } from "../../../helpers";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../router";
 
 export function useSignInForm() {
+    const navigate = useNavigate();
+
     const [signIn, { error }] = authApi.useSignInMutation();
     const [formState, setFormState] = useState<ISignInDto>({
         email: "",
@@ -20,10 +24,13 @@ export function useSignInForm() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
         const { data: token } = await signIn({ body: formState });
         if (token) {
             setToken(token);
         }
+
+        navigate(ROUTES.HOME);
     };
 
     return {

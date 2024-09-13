@@ -4,3 +4,4 @@ export * from "./Input";
 export * from "./Table";
 export * from "./UserTableItem";
 export * from "./Button";
+export * from "./ProtectedRoute";

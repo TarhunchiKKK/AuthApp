@@ -43,6 +43,7 @@ export const authApi = createApi({
                 method: "GET",
                 headers: queryArgs.headers,
             }),
+            transformErrorResponse: (error: unknown) => (error as IAuthError).data.message,
         }),
     }),
 });
