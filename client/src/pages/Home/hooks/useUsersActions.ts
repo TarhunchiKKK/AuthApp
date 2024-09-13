@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { usersApi } from "../../../api/users";
+import { usersApi } from "../../../api";
 import { unselectAllUsers, useAppSelector } from "../../../redux";
 import { UserStatus } from "../../../types";
 

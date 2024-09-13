@@ -1,5 +1,4 @@
-import { Table } from "../../../components/Table";
-import { UserTableItem } from "../../../components/UserTableItem/UserTableItem";
+import { UserTableItem, Table } from "../../../components";
 import { IUser } from "../../../types";
 import { IUSersTableProps } from "./props";
 import { UsersTableHeaders } from "./UsersTableHeaders";

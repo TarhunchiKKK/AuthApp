@@ -1,1 +1,1 @@
-export { TableItem } from "./UserTableItem";
+export { UserTableItem } from "./UserTableItem";

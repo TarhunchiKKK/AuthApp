@@ -1,4 +1,4 @@
-import { usersApi } from "../../api/users";
+import { usersApi } from "../../api";
 import { useUsersActions } from "./hooks";
 import { UserActiansToolbar } from "./UserActiansToolbar";
 import { UsersTable } from "./UsersTable";
