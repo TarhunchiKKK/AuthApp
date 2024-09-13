@@ -22,6 +22,6 @@ export class User {
     @Column({ nullable: true })
     lastLoginAt: Date;
 
-    @Column({ type: "enum", enum: UserStatus })
+    @Column()
     status: UserStatus;
 }
