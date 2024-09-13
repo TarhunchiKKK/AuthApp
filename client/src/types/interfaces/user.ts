@@ -1,3 +1,5 @@
+import { UserStatus } from "../enums";
+
 export interface IUser {
     id: string;
 
@@ -9,7 +11,7 @@ export interface IUser {
 
     regiteredAt: Date;
 
-    lastLoginAt: Date;
+    lastLoginAt: Date | null;
 
     status: UserStatus;
 }

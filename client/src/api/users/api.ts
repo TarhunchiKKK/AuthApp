@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser } from "../../types";
+import { transformUserResponse } from "./helpers";
 import {
     IChangeUsersStatusQueryArgs,
     IGetAllUsersQueryArgs,
     IRemoveMultipleUsersQueryArgs,
+    IUserResponse,
 } from "./interfaces";
 
 export const usersApi = createApi({
@@ -23,6 +25,7 @@ export const usersApi = createApi({
                     Authorization: `Bearer ${queryArgs.headers.Authorization}`,
                 },
             }),
+            transformResponse: (users: IUserResponse[]) => users.map(transformUserResponse),
             providesTags: ["User"],
         }),
 
