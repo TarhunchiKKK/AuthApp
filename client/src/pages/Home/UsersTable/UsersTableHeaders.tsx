@@ -1,6 +1,9 @@
 import { IUsersTableHeadersProps } from "./props";
 
-export function UsersTableHeaders({ onSelectAllUsers }: IUsersTableHeadersProps) {
+export function UsersTableHeaders({
+    onSelectAllUsers,
+    isCheckboxChecked,
+}: IUsersTableHeadersProps) {
     return (
         <thead>
             <tr>
@@ -9,6 +12,7 @@ export function UsersTableHeaders({ onSelectAllUsers }: IUsersTableHeadersProps)
                         type="checkbox"
                         className="w-4 h-4 cursor-pointer"
                         onChange={onSelectAllUsers}
+                        checked={isCheckboxChecked}
                         defaultChecked={false}
                     />
                 </th>

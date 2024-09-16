@@ -7,4 +7,5 @@ export interface IUSersTableProps {
 
 export interface IUsersTableHeadersProps {
     onSelectAllUsers: () => void;
+    isCheckboxChecked: boolean;
 }

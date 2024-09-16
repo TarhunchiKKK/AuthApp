@@ -52,6 +52,10 @@ export function useToolbarActions() {
     };
 
     const handleRemoveUsers = () => {
+        if (selectedUsersIds.includes(currentUserId)) {
+            logout();
+        }
+
         removeMultipleUsers({
             headers,
             body: {
