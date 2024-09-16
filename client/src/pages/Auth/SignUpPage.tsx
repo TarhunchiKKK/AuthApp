@@ -53,7 +53,7 @@ export function SignUpPage() {
             {error && <p className="text-red-600 text-lg mb-6">{error.toString()}</p>}
 
             <div className="flex flex-row justify-center mb-6">
-                <Button content="Sing In" />
+                <Button content="Sing Up" />
             </div>
 
             <div className="flex flex-row justify-center">
