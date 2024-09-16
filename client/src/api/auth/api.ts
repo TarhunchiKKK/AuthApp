@@ -17,23 +17,23 @@ export const authApi = createApi({
     }),
 
     endpoints: (builder) => ({
-        signUp: builder.mutation<string, ISignUpQueryArgs>({
+        signUp: builder.mutation<ISignUpResponse, ISignUpQueryArgs>({
             query: (queryArgs: ISignUpQueryArgs) => ({
                 url: "/sign-up",
                 method: "POST",
                 body: queryArgs.body,
             }),
-            transformResponse: (response: ISignUpResponse) => response.access.access,
+            // transformResponse: (response: ISignUpResponse) => response.access.access,
             transformErrorResponse: (error: unknown) => (error as IAuthError).data.message,
         }),
 
-        signIn: builder.mutation<string, ISignInQueryArgs>({
+        signIn: builder.mutation<ISignInResponse, ISignInQueryArgs>({
             query: (queryArgs: ISignInQueryArgs) => ({
                 url: "/sign-in",
                 method: "POST",
                 body: queryArgs.body,
             }),
-            transformResponse: (response: ISignInResponse) => response.access.access,
+            // transformResponse: (response: ISignInResponse) => response.access.access,
             transformErrorResponse: (error: unknown) => (error as IAuthError).data.message,
         }),
 

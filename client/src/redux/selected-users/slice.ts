@@ -6,9 +6,11 @@ export const selectedUsersSlice = createSlice({
     initialState: selectedUsersAdapter.getInitialState(),
     reducers: {
         selectOneUser: selectedUsersAdapter.addOne,
+        selectManyUsers: selectedUsersAdapter.addMany,
         unselectOneUser: selectedUsersAdapter.removeOne,
         unselectAllUsers: selectedUsersAdapter.removeAll,
     },
 });
 
-export const { selectOneUser, unselectOneUser, unselectAllUsers } = selectedUsersSlice.actions;
+export const { selectOneUser, unselectOneUser, selectManyUsers, unselectAllUsers } =
+    selectedUsersSlice.actions;

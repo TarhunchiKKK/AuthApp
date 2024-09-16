@@ -1,14 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { authApi } from "../../../api";
 import { ISignUpDto } from "../interfaces";
-import { setToken } from "../../../helpers";
+import { useCredentails } from "../../../helpers";
 import { ROUTES } from "../../../router";
 import { useNavigate } from "react-router-dom";
 
 export function useSignUpForm() {
+    const [signUp, { error }] = authApi.useSignUpMutation();
+
+    const { saveCredentails } = useCredentails();
+
     const navigate = useNavigate();
 
-    const [signUp, { error }] = authApi.useSignUpMutation();
     const [formState, setFormState] = useState<ISignUpDto>({
         name: "",
         email: "",
@@ -30,9 +33,9 @@ export function useSignUpForm() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        const { data: token } = await signUp({ body: formState });
-        if (token) {
-            setToken(token);
+        const { data } = await signUp({ body: formState });
+        if (data) {
+            saveCredentails(data.user.id, data.access.access);
         }
 
         navigate(ROUTES.HOME);

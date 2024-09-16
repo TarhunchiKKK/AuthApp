@@ -1,5 +1,7 @@
-import { getToken } from "../local-storage";
+import { getCurrentUserId, getToken } from "../local-storage";
 
 export function useIsAuth() {
-    return getToken() ? true : false;
+    const token = getToken();
+    const currentUserId = getCurrentUserId();
+    return token && currentUserId;
 }

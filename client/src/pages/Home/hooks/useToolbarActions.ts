@@ -2,17 +2,22 @@ import { useDispatch } from "react-redux";
 import { usersApi } from "../../../api";
 import { unselectAllUsers, useAppSelector } from "../../../redux";
 import { UserStatus } from "../../../types";
+import { useCredentails, useLogout } from "../../../helpers";
 
-export function useUsersActions(token: string) {
+export function useToolbarActions() {
+    const [changeUsersStatus] = usersApi.useChangeUsersStatusMutation();
+    const [removeMultipleUsers] = usersApi.useRemoveMultipleUsersMutation();
+
+    const { token, currentUserId } = useCredentails();
+
+    const logout = useLogout();
+
     const headers = {
         Authorization: token,
     };
 
     const dispatch = useDispatch();
     const selectedUsersIds = useAppSelector((state) => state["users/selected"].ids);
-
-    const [changeUsersStatus] = usersApi.useChangeUsersStatusMutation();
-    const [removeMultipleUsers] = usersApi.useRemoveMultipleUsersMutation();
 
     const handleUnblockUsers = () => {
         changeUsersStatus({
@@ -24,9 +29,15 @@ export function useUsersActions(token: string) {
                 })),
             },
         });
+
         dispatch(unselectAllUsers());
     };
+
     const handleBlockUsers = () => {
+        if (selectedUsersIds.includes(currentUserId)) {
+            logout();
+        }
+
         changeUsersStatus({
             headers,
             body: {
@@ -36,8 +47,10 @@ export function useUsersActions(token: string) {
                 })),
             },
         });
+
         dispatch(unselectAllUsers());
     };
+
     const handleRemoveUsers = () => {
         removeMultipleUsers({
             headers,
@@ -47,6 +60,7 @@ export function useUsersActions(token: string) {
                 })),
             },
         });
+
         dispatch(unselectAllUsers());
     };
 

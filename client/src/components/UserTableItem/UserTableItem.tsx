@@ -5,9 +5,7 @@ import { formatDate } from "../../helpers";
 
 export function UserTableItem({ user }: IUserTableItemProps) {
     const dispatch = useDispatch();
-    const selectedUsersIds = useAppSelector((state) => state["users/selected"].ids);
-
-    const isSelected = selectedUsersIds.includes(user.id);
+    const isSelected = useAppSelector((state) => state["users/selected"].ids).includes(user.id);
 
     const handleSelect = () => {
         if (isSelected) {
@@ -24,6 +22,7 @@ export function UserTableItem({ user }: IUserTableItemProps) {
                     type="checkbox"
                     className="w-4 h-4 cursor-pointer"
                     onChange={handleSelect}
+                    checked={isSelected}
                     defaultChecked={isSelected}
                 />
             </td>

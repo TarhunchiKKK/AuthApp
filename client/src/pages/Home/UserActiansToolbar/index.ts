@@ -1,1 +1,1 @@
-export { UserActiansToolbar } from "./UserActiansToolbar";
+export { UserActionsToolbar } from "./UserActionsToolbar";

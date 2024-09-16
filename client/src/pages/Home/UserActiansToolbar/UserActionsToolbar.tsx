@@ -4,7 +4,7 @@ import { IUserActiansToolbar } from "./props";
 import { MdBlock } from "react-icons/md";
 import { TiDeleteOutline } from "react-icons/ti";
 
-export function UserActiansToolbar({ onUnblock, onBlock, onDlete }: IUserActiansToolbar) {
+export function UserActionsToolbar({ onUnblock, onBlock, onDlete }: IUserActiansToolbar) {
     return (
         <div className="mb-10">
             <Toolbar>
