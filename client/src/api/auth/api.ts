@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IUser } from "../../types";
 import {
     IAuthError,
     IGetProfileQueryArgs,
@@ -7,7 +8,6 @@ import {
     ISignUpQueryArgs,
     ISignUpResponse,
 } from "./interfaces";
-import { IUser } from "../../types";
 
 export const authApi = createApi({
     reducerPath: "auth/api",
@@ -23,7 +23,6 @@ export const authApi = createApi({
                 method: "POST",
                 body: queryArgs.body,
             }),
-            // transformResponse: (response: ISignUpResponse) => response.access.access,
             transformErrorResponse: (error: unknown) => (error as IAuthError).data.message,
         }),
 
@@ -43,7 +42,7 @@ export const authApi = createApi({
                 method: "GET",
                 headers: queryArgs.headers,
             }),
-            transformErrorResponse: (error: unknown) => (error as IAuthError).data.message,
+            // transformErrorResponse: (error: unknown) => (error as IAuthError).message,
         }),
     }),
 });

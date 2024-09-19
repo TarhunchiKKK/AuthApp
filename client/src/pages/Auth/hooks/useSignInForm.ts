@@ -7,6 +7,7 @@ import { ROUTES } from "../../../router";
 
 export function useSignInForm() {
     const [signIn, { error }] = authApi.useSignInMutation();
+    // const [error, setError] = useState<string>("");
 
     const { saveCredentails } = useCredentails();
 
@@ -31,10 +32,11 @@ export function useSignInForm() {
         const { data } = await signIn({ body: formState });
         if (data) {
             saveCredentails(data.user.id, data.access.access);
+            navigate(ROUTES.HOME);
         }
-
-        navigate(ROUTES.HOME);
     };
+
+    console.log(error);
 
     return {
         formState,

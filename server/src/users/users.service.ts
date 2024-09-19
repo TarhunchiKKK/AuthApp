@@ -17,24 +17,18 @@ export class UsersService {
     ) {}
 
     public async create(createUserDto: CreateUserDto) {
-        const existUser = await this.usersRepository.findOne({
-            where: {
-                email: createUserDto.email,
-            },
-        });
-
-        if (existUser) {
-            throw new BadRequestException("User with such email already exists.");
+        try {
+            const hashedPassword = await argon2.hash(createUserDto.password);
+            const dataToSave: Omit<User, "id" | "regiteredAt"> = {
+                ...createUserDto,
+                password: hashedPassword,
+                status: UserStatus.Active,
+                lastLoginAt: null,
+            };
+            return await this.usersRepository.save(dataToSave);
+        } catch (_: unknown) {
+            throw new BadRequestException("Creating user error.");
         }
-
-        const hashedPassword = await argon2.hash(createUserDto.password);
-        const dataToSave: Omit<User, "id" | "regiteredAt"> = {
-            ...createUserDto,
-            password: hashedPassword,
-            status: UserStatus.Active,
-            lastLoginAt: null,
-        };
-        return await this.usersRepository.save(dataToSave);
     }
 
     public async findAllUsers() {

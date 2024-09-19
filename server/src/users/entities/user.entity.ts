@@ -10,7 +10,7 @@ export class User {
     name: string;
 
     @Column()
-    @Index()
+    @Index({ unique: true })
     email: string;
 
     @Column()

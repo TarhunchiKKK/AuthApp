@@ -36,9 +36,8 @@ export function useSignUpForm() {
         const { data } = await signUp({ body: formState });
         if (data) {
             saveCredentails(data.user.id, data.access.access);
+            navigate(ROUTES.HOME);
         }
-
-        navigate(ROUTES.HOME);
     };
 
     return {
